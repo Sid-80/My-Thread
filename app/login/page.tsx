@@ -1,8 +1,9 @@
 // `app/dashboard/page.tsx` is the UI for the `/dashboard` URL
 "use client";
 import React, { FormEvent, useState } from "react";
+import "@/app/globals.css"
 import Link from "next/link";
-import { signIn, signOut } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 export default function Page() {
@@ -23,8 +24,11 @@ export default function Page() {
         })
         // if(res?.error) setValidation("Error !!")
         // console.log(res?.error)
-
-        router.replace('dashboard')
+        console.log(res)
+        if(res?.ok){
+          router.replace('dashboard')
+        }
+        
 
     } catch (e) {
         console.log(e)

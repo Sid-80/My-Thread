@@ -1,4 +1,5 @@
 import mongoose, { Schema } from "mongoose";
+import { Thread } from "./thread";
 
 interface User {
   username?: string;
@@ -6,6 +7,8 @@ interface User {
   avatar?: string;
   bio?: string;
   password: string;
+  following?: string[];
+  followers?: string[];
 }
 
 const UserSchema = new Schema<User>(
@@ -15,10 +18,13 @@ const UserSchema = new Schema<User>(
     avatar: String,
     username: String,
     bio: String,
+    following: [String],
+    followers: [String],
   },
   { timestamps: true }
 );
 
-const UserModel = mongoose.models.User || mongoose.model<User>("User", UserSchema);
+const UserModel =
+  mongoose.models?.User || mongoose.model<User>("User", UserSchema);
 
 export default UserModel;

@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -8,9 +9,9 @@ export default function LeftBar() {
   return (
     <div className="bg-[#0d1b2a] flex flex-col gap-8 h-full p-5">
       <Link
-        href={"/"}
+        href={"/dashboard"}
         className={`${
-          pathname === "/" ? "bg-[#9d4edd] shadow-md" : null
+          pathname === "/dashboard" ? "bg-[#9d4edd] shadow-md" : null
         } p-2 text-white rounded-md px-2  font-semibold flex items-center justify-start gap-2 w-[150px]`}
       >
         <Image
@@ -23,9 +24,12 @@ export default function LeftBar() {
         Home
       </Link>
       <Link
-        href={"/search"}
+        href={"/dashboard/search"}
         className={`${
-          pathname === "/search" ? "bg-[#9d4edd] shadow-md" : null
+          pathname === "/dashboard/search" ||
+          pathname.includes("/dashboard/search/")
+            ? "bg-[#9d4edd] shadow-md"
+            : null
         } p-2 text-white rounded-md px-2  font-semibold flex items-center justify-start gap-2 w-[150px]`}
       >
         <Image
@@ -38,9 +42,9 @@ export default function LeftBar() {
         Search
       </Link>
       <Link
-        href={"/activity"}
+        href={"/dashboard/activity"}
         className={`${
-          pathname === "/activity" ? "bg-[#9d4edd] shadow-md" : null
+          pathname === "/dashboard/activity" ? "bg-[#9d4edd] shadow-md" : null
         } p-2 text-white rounded-md px-2  font-semibold flex items-center justify-start gap-2 w-[150px]`}
       >
         <Image
@@ -53,9 +57,9 @@ export default function LeftBar() {
         Activity
       </Link>
       <Link
-        href={"/communities"}
+        href={"/dashboard/create"}
         className={`${
-          pathname === "/communities" ? "bg-[#9d4edd] shadow-md" : null
+          pathname === "/dashboard/create" ? "bg-[#9d4edd] shadow-md" : null
         } p-2 text-white rounded-md px-2  font-semibold flex items-center justify-start gap-2 w-[150px]`}
       >
         <Image
@@ -65,12 +69,12 @@ export default function LeftBar() {
           className=""
           alt=""
         />
-        Communities
+        Create
       </Link>
       <Link
-        href={"/profile"}
+        href={"/dashboard/profile"}
         className={`${
-          pathname === "/activity" ? "bg-[#9d4edd] shadow-md" : null
+          pathname === "/dashboard/profile" ? "bg-[#9d4edd] shadow-md" : null
         } p-2 text-white rounded-md px-2  font-semibold flex items-center justify-start gap-2 w-[150px]`}
       >
         <Image
