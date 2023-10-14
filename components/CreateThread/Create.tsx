@@ -39,8 +39,6 @@ export default function Create() {
     }
   };
 
-  console.log(data?._id)
-
   return (
     <form onSubmit={(e) => submitHandler(e)} className="flex-1 text-white p-4">
       <p>Thread Text</p>

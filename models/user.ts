@@ -7,8 +7,8 @@ interface User {
   avatar?: string;
   bio?: string;
   password: string;
-  following?: string[];
-  followers?: string[];
+  following?: any[];
+  followers?: any[];
 }
 
 const UserSchema = new Schema<User>(
@@ -18,8 +18,8 @@ const UserSchema = new Schema<User>(
     avatar: String,
     username: String,
     bio: String,
-    following: [String],
-    followers: [String],
+    following: [ { type: Schema.Types.ObjectId, required: true, ref:"User" }],
+    followers: [ { type: Schema.Types.ObjectId, required: true, ref:"User" }],
   },
   { timestamps: true }
 );

@@ -4,17 +4,8 @@ import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import Card from "../Thread/Card";
-import { Threads } from "@/types";
+import { Threads, UserData } from "@/types";
 
-type UserData = {
-  createdAt: string;
-  avatar: string;
-  email: string;
-  followers: string[];
-  following: string[];
-  updatedAt: string;
-  username: string;
-};
 
 export default function AllPosts() {
   const { data: session } = useSession();
@@ -30,19 +21,20 @@ export default function AllPosts() {
         method: "POST",
         data: { email: session?.user?.email },
       });
-
       setuserData(res.data.user[0]);
       const { data } = await axios({
         url: "/api/getThreads/",
         method: "POST",
         data: {
-          email: [...res.data.user[0].following, res.data.user[0].email],
+          _id: [...res.data.user[0].following, res.data.user[0]._id],
         },
       });
       setPosts(data.posts);
       return data.posts;
     },
   });
+  
+  
 
   if (isLoading || !data) {
     return (

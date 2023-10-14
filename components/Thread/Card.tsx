@@ -2,6 +2,7 @@ import { UserData, comment } from "@/types";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import React, { SetStateAction, useEffect, useState } from "react";
 import TimeAgo from "react-timeago";
 
@@ -37,6 +38,7 @@ export default function Card({
   const [comment, setComment] = useState("");
   const [commentText, setCommentText] = useState("");
   const [allComment, setAllComment] = useState<comment[]>([]);
+  const router = useRouter();
 
   const likeHandler = async () => {
     try {
@@ -70,7 +72,7 @@ export default function Card({
         url: "/api/comment/",
         method: "PUT",
         data: JSON.stringify({
-          authorId: author._id,
+          authorId: userData?._id,
           threadId: id,
           commentText,
         }),
@@ -81,6 +83,7 @@ export default function Card({
       console.log(e);
     }
   };
+
 
   const getComments = async () => {
     try {
@@ -106,17 +109,19 @@ export default function Card({
       <div className="flex items-center justify-start gap-4">
         {author.avatar ? (
           <img
+            onClick={()=>{router.push(`/dashboard/search/${author._id}`)}}
             src={author.avatar}
-            width={80}
-            height={80}
-            className=" rounded-full"
+            width={50}
+            height={50}
+            className=" cursor-pointer rounded-full"
           />
         ) : (
           <Image
+          onClick={()=>{router.push(`/dashboard/search/${author._id}`)}}
             src={"/assets/User.svg"}
-            width={40}
-            height={40}
-            className=""
+            width={45}
+            height={45}
+            className="mx-5 cursor-pointer"
             alt=""
           />
         )}
@@ -186,9 +191,9 @@ export default function Card({
                 ) : (
                   <Image
                     src={"/assets/User.svg"}
-                    width={40}
-                    height={40}
-                    className=""
+                    width={45}
+                    height={45}
+                    className="mx-4"
                     alt=""
                   />
                 )}
@@ -200,9 +205,9 @@ export default function Card({
             ))}
           </div>
           <div className="flex w-full gap-1 p-2 px-5 overflow-hidden">
-            {author.avatar ? (
+            {userData?.avatar ? (
               <img
-                src={author.avatar}
+                src={userData?.avatar}
                 width={50}
                 height={50}
                 className=" rounded-full"

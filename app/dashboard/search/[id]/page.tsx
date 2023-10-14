@@ -13,9 +13,9 @@ type Props = {
 };
 
 
-
 export default function Page({ params: { id } }: Props) {
-  const [userData, setuserData] = useState<UserData | null>(null);
+  const [profileData, setprofileData] = useState<UserData | null>(null);
+  const [userData, setUserData] = useState<UserData | null>(null);
   const [userThreads, setUserThreads] = useState<Threads[]>([]);
   const [liked, setLiked] = useState(false);
   const { data: session } = useSession();
@@ -27,11 +27,19 @@ export default function Page({ params: { id } }: Props) {
         method: "POST",
         data: { _id: id },
       });
-      setuserData(data.user[0]);
+      setprofileData(data.user[0]);
 
+      await axios({
+        url: "/api/getUser/",
+        method: "POST",
+        data: { email: session?.user?.email },
+      }).then((res)=>{
+        setUserData(res.data.user[0]);
+      })
+      
       const res = await axios({
         url: "/api/getThreads/",
-        data: { email: data.user[0].email },
+        data: { _id: data.user[0]._id },
         method: "POST",
       });
       setUserThreads(res.data.posts);
@@ -45,8 +53,8 @@ export default function Page({ params: { id } }: Props) {
       url: "/api/follow/",
       method: "POST",
       data: JSON.stringify({
-        userEmail: session?.user?.email,
-        profileEmail: userData?.email,
+        userId: userData?._id,
+        profileId: profileData?._id,
       }),
     });
     if (status === 200) getUser();
@@ -57,14 +65,12 @@ export default function Page({ params: { id } }: Props) {
       url: "/api/follow/",
       method: "PUT",
       data: JSON.stringify({
-        userEmail: session?.user?.email,
-        profileEmail: userData?.email,
+        userId: userData?._id,
+        profileId: profileData?._id,
       }),
     });
     if (status === 200) getUser();
   };
-
-  console.log(userData)
 
   useEffect(() => {
     getUser();
@@ -75,9 +81,9 @@ export default function Page({ params: { id } }: Props) {
       <div className="w-[70%] flex flex-col">
         <div className="flex w-full items-center justify-between">
           <div className="flex items-center justify-center gap-4">
-          {userData?.avatar ? (
+          {profileData?.avatar ? (
                   <img
-                    src={userData.avatar}
+                    src={profileData.avatar}
                     width={80}
                     height={80}
                     className=" rounded-full"
@@ -91,9 +97,9 @@ export default function Page({ params: { id } }: Props) {
                     alt=""
                   />
                 )}
-            <h1 className="text-lg">{userData?.username}</h1>
+            <h1 className="text-lg">{profileData?.username}</h1>
           </div>
-          {userData?.followers.includes(session?.user?.email!) ? (
+          {profileData?.followers.includes(userData?._id!) ? (
             <button
               onClick={() => unFollowHandler()}
               className="bg-[#ff9770] text-xs text-black p-2 font-bold rounded-lg"
@@ -110,17 +116,17 @@ export default function Page({ params: { id } }: Props) {
           )}
         </div>
         <div className="flex w-full items-center justify-between">
-          <p className="text-[#adb5bd]">{userData?.email}</p>
+          <p className="text-[#adb5bd]">{profileData?.email}</p>
           <div className="flex gap-4 py-2">
-            <div>{userData?.followers.length} Followers</div>
-            <div>{userData?.following.length} Following</div>
+            <div>{profileData?.followers.length} Followers</div>
+            <div>{profileData?.following.length} Following</div>
           </div>
         </div>
         <div className="border-0 border-b-2 border-slate-400 w-full"></div>
         <div className="flex flex-col gap-4 p-5">
           {userThreads.map((th, index) => (
             <Card
-              userData={userData}
+              userData={profileData}
               liked={liked}
               setLiked={setLiked}
               id={th._id}

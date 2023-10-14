@@ -29,4 +29,5 @@ export interface UserData {
     following: string[];
     updatedAt: string;
     username: string;
+    _id: string;
 };

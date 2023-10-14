@@ -1,6 +1,4 @@
 "use client";
-import LeftBar from "@/components/Dashboard/LeftBar";
-import RightBar from "@/components/Dashboard/RightBar";
 import SerachResult from "@/components/Search/SerachResult";
 import TextSearch from "@/components/Search/TextSearch";
 import { useQuery } from "@tanstack/react-query";
@@ -21,7 +19,7 @@ export default function Page() {
     <div className="flex-1 flex flex-col gap-4 overflow-hidden items-center justify-start p-6">
       <TextSearch text={text} setText={setText} />
       <div className="flex flex-1 flex-col items-center justify-start w-full ">
-        {data
+        {text !== "" && data
           ?.filter((val: any) => {
             if (text === "") {
               return val;
