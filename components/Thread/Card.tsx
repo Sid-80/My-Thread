@@ -3,7 +3,7 @@ import axios from "axios";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React, { SetStateAction, useEffect, useState } from "react";
+import React, { SetStateAction, useEffect, useLayoutEffect, useRef, useState } from "react";
 import TimeAgo from "react-timeago";
 
 type Props = {
@@ -35,10 +35,10 @@ export default function Card({
 }: Props) {
   const { data: session } = useSession();
   const [showComment, setShowComments] = useState<string | null>(null);
-  const [comment, setComment] = useState("");
   const [commentText, setCommentText] = useState("");
   const [allComment, setAllComment] = useState<comment[]>([]);
   const router = useRouter();
+  const msgRef = useRef<HTMLDivElement>(null);
 
   const likeHandler = async () => {
     try {
@@ -77,7 +77,10 @@ export default function Card({
           commentText,
         }),
       });
-      if (status === 200) setCommentText("");
+      if (status === 200) {
+        setCommentText("");
+        getComments();
+      };
       setLiked(!liked);
     } catch (e) {
       console.log(e);
@@ -99,6 +102,12 @@ export default function Card({
       console.log(e);
     }
   };
+
+  useLayoutEffect(()=>{
+    if (msgRef.current) {
+      msgRef.current.scrollIntoView();
+    }
+  },[allComment])
 
   useEffect(() => {
     getComments();
@@ -183,17 +192,19 @@ export default function Card({
               >
                 {com.author.avatar ? (
                   <img
-                    src={author.avatar}
-                    width={80}
-                    height={80}
-                    className=" rounded-full"
+                    onClick={()=>{router.push(`/dashboard/search/${com.author._id}`)}}
+                    src={com.author.avatar}
+                    width={38}
+                    height={38}
+                    className="rounded-full cursor-pointer"
                   />
                 ) : (
                   <Image
+                  onClick={()=>{router.push(`/dashboard/search/${com.author._id}`)}}
                     src={"/assets/User.svg"}
                     width={45}
                     height={45}
-                    className="mx-4"
+                    className="mx-4 cursor-pointer"
                     alt=""
                   />
                 )}
@@ -203,6 +214,7 @@ export default function Card({
                 </div>
               </div>
             ))}
+            <div ref={msgRef} />
           </div>
           <div className="flex w-full gap-1 p-2 px-5 overflow-hidden">
             {userData?.avatar ? (

@@ -3,6 +3,7 @@ export interface comment {
       email: string;
       username: string;
       avatar:string;
+      _id:string;
     };
     text: string;
   };

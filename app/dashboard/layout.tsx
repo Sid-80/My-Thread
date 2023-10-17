@@ -20,9 +20,9 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <main className="flex flex-col h-screen w-screen bg-[#000505]">
+        <main className="flex flex-col h-screen w-screen bg-[#000505] overflow-hidden">
           <Navbar />
-          <section className="flex flex-1">
+          <section className="flex flex-1 overflow-hidden">
             <LeftBar />
             {children}
             <RightBar />
