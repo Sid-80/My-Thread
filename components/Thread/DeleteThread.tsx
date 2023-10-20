@@ -1,15 +1,29 @@
+import axios from "axios";
 import Image from "next/image";
+import { SetStateAction } from "react";
 
-function DeleteTrash() {
+type Props = {
+  id:string;
+  setDelete:React.Dispatch<SetStateAction<boolean>>;
+  setDelId:React.Dispatch<SetStateAction<string>>;
+}
+
+function DeleteTrash({id,setDelete,setDelId}:Props) {
   return (
+    <>
+    
     <Image
-      onClick={()=>{}}
+      onClick={()=>{
+        setDelete(true);
+        setDelId(id);
+      }}
       src={"/assets/trash.svg"}
       width={20}
       height={20}
-      className=""
+      className=" cursor-pointer"
       alt=""
     />
+    </>
   );
 }
 

@@ -20,16 +20,11 @@ export default function Page() {
     e.preventDefault();
     try {
         const res = await signIn('credentials',{
-            email,password,redirect:false
+            email,password,redirect:false,callbackUrl: `${window.location.origin}/dashboard`
         })
-        // if(res?.error) setValidation("Error !!")
-        // console.log(res?.error)
-        console.log(res)
-        if(res?.ok){
-          router.replace('dashboard')
+        if(res?.url){
+          router.push(`${window.location.origin}/dashboard`)
         }
-        
-
     } catch (e) {
         console.log(e)
     }

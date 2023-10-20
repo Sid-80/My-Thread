@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Navbar from "@/components/Dashboard/Navbar";
 import LeftBar from "@/components/Dashboard/LeftBar";
-import RightBar from "@/components/Dashboard/RightBar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,12 +19,12 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <main className="flex flex-col h-screen w-screen bg-[#000505] overflow-hidden">
+        <main className="flex relative flex-col h-screen w-screen bg-[#000505] overflow-hidden">
           <Navbar />
-          <section className="flex flex-1 overflow-hidden">
+          <section className="flex relative flex-1 overflow-hidden">
             <LeftBar />
             {children}
-            <RightBar />
+            {/* <RightBar /> */}
           </section>
         </main>
       </body>

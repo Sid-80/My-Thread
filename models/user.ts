@@ -1,5 +1,4 @@
 import mongoose, { Schema } from "mongoose";
-import { Thread } from "./thread";
 
 interface User {
   username?: string;

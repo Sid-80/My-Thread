@@ -30,18 +30,17 @@ export const options: NextAuthOptions = {
         const { email, password }: any = credentials;
         try {
           await mongoDB();
-          const emailCheck = await UserModel.findOne({ email });
-          if (!emailCheck) {
-            return null;
+          const user = await UserModel.findOne({ email });
+          if (!user) {
+            throw new Error("Not Registered!");
           }
-          const passCheck = await bcrypt.compare(password, emailCheck.password);
+          const passCheck = await bcrypt.compare(password, user.password);
           console.log(passCheck)
-          if (!passCheck) return null;
-          return emailCheck;
-        } catch (e) {}
-
-        const user = { id: "18" };
-        return user;
+          if (!passCheck) throw new Error("Incorrect Password!");
+          return user;
+        } catch (e) {
+          console.log(e)
+        }
       },
     }),
   ],
@@ -49,4 +48,27 @@ export const options: NextAuthOptions = {
     signIn: "/login",
   },
   secret: process.env.NEXTAUTH_SECRET,
+  callbacks:{
+    async session({ session, user, token }) {
+      return {
+        ...session,
+        user:{
+          ...session.user,
+          id:token.id
+        }
+      }
+    },
+    async jwt({ token, user, session }) {
+      if(user){
+        return {
+          ...token,
+          id:user._id,
+        } 
+      }
+      return token;
+    }
+  },
+  session:{
+    strategy:"jwt",
+  },
 };

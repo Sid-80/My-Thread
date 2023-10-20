@@ -33,8 +33,6 @@ export default function AllPosts() {
       return data.posts;
     },
   });
-  
-  
 
   if (isLoading || !data) {
     return (

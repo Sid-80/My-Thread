@@ -9,18 +9,6 @@ export default function Create() {
   const { data: session } = useSession();
   const [threadText, setText] = useState("");
 
-  const { data, isLoading } = useQuery({
-    queryKey: ["userInfo2"],
-    queryFn: async () => {
-      const { data } = await axios({
-        url: "/api/getUser/",
-        method: "POST",
-        data: { email: session?.user?.email },
-      });
-      return data.user[0];
-    },
-  });
-
   const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
@@ -29,15 +17,15 @@ export default function Create() {
         method: "POST",
         data: JSON.stringify({
           threadText,
-          author: data._id,
+          author: session?.user.id,
         }),
       });
-      console.log(res.data);
       if (res.status === 200) setText("");
     } catch (e) {
       console.log(e);
     }
   };
+  console.log(session?.user.id)
 
   return (
     <form onSubmit={(e) => submitHandler(e)} className="flex-1 text-white p-4">

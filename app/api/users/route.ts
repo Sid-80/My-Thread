@@ -11,3 +11,14 @@ export async function GET(request: Request) {
       return NextResponse.json({ "message":"Error occured !!" }, { status: 500 });
     }
 }
+
+export async function PUT(request: Request) {
+  try {
+    await mongoDB();
+    const {_id,bio,username} = await request.json();
+    const updates = await UserModel.updateOne({_id},{bio,username});
+    return NextResponse.json({"msg":"hii"},{status:200})
+  } catch (e) {
+    
+  }
+}

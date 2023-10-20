@@ -87,7 +87,6 @@ export default function Card({
     }
   };
 
-
   const getComments = async () => {
     try {
       const { data } = await axios({

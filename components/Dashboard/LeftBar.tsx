@@ -7,7 +7,7 @@ import React from "react";
 export default function LeftBar() {
   const pathname = usePathname();
   return (
-    <div className="bg-[#0d1b2a] flex flex-col gap-8 h-full p-5">
+    <div className="bg-[#0d1b2a] hidden sm:!flex flex-col gap-8 h-full p-5">
       <Link
         href={"/dashboard"}
         className={`${
@@ -40,21 +40,6 @@ export default function LeftBar() {
           alt=""
         />
         Search
-      </Link>
-      <Link
-        href={"/dashboard/activity"}
-        className={`${
-          pathname === "/dashboard/activity" ? "bg-[#9d4edd] shadow-md" : null
-        } p-2 text-white rounded-md px-2  font-semibold flex items-center justify-start gap-2 w-[150px]`}
-      >
-        <Image
-          src={"/assets/Like.svg"}
-          width={20}
-          height={20}
-          className=""
-          alt=""
-        />
-        Activity
       </Link>
       <Link
         href={"/dashboard/create"}
